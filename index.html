@@ -56,25 +56,70 @@
       <div class="grid">
         <div class="card">
           <div class="pill">Definition</div>
-          <p>The <strong>Command</strong> pattern encapsulates a request as an object with a simple interface <span class="mono">execute()</span> (and optionally <span class="mono">undo()</span>). It decouples the <em>invoker</em> (who triggers an action) from the <em>receiver</em> (who performs it).</p>
+          <p>
+            The <strong>Command</strong> pattern turns a request into a first-class object that exposes a minimal interface
+            (<span class="mono">execute()</span> and optionally <span class="mono">undo()</span>/<span class="mono">redo()</span>). This lets you
+            <em>decouple</em> the thing that triggers an action (<em>Invoker</em>) from the thing that knows how to do it
+            (<em>Receiver</em>), while keeping the action itself (<em>Command</em>) portable and composable.
+          </p>
+          <ul>
+            <li><strong>Roles:</strong> <em>Client</em> builds commands, <em>Invoker</em> queues/invokes them, <em>Receiver</em> performs the work.</li>
+            <li><strong>Shape:</strong> <span class="mono">Command → Receiver.action()</span> (and reverse it in <span class="mono">undo()</span>).</li>
+            <li><strong>Storage-friendly:</strong> Commands can be logged, serialized, scheduled, or replayed.</li>
+            <li><strong>Uniform API:</strong> Every action is “just a command,” enabling consistent pipelines (queueing, audit, retries).</li>
+          </ul>
+          <p style="color:#9aa3b2">
+            Think of it as “packaging a button click into an object” so the system can record, reorder, undo, and automate those clicks later.
+          </p>
         </div>
         <div class="card">
           <div class="pill">Rationale</div>
           <ul>
-            <li>Decouple UI and business logic</li>
-            <li>Uniform handling of actions: queue, log, retry</li>
-            <li>First‑class <strong>Undo/Redo</strong> support</li>
-            <li>Macro/Batch operations</li>
+            <li><strong>Decoupling:</strong> UI/controllers don’t need to know <em>how</em> an action is implemented—only which command to invoke.</li>
+            <li><strong>Undo/Redo by design:</strong> By inverting effects in <span class="mono">undo()</span>, you get editor-grade history stacks.</li>
+            <li><strong>Composability:</strong> Macro commands (a command of commands) enable batch/transactional operations.</li>
+            <li><strong>Asynchrony &amp; queues:</strong> Commands drop cleanly into job queues, workers, and sagas with retry/backoff.</li>
+            <li><strong>Auditability:</strong> Log the <em>intent</em> (“what”), not only side effects—great for analytics and compliance.</li>
+            <li><strong>Testability:</strong> Commands isolate behavior; assert on <span class="mono">execute()</span>/<span class="mono">undo()</span> without wiring full UI.</li>
           </ul>
+          <div style="margin-top:8px">
+            <div class="pill">Trade-offs</div>
+              <ul>
+                <li><strong>Overhead:</strong> Many tiny classes/objects if you create one per action—consider factories or inline/lambda commands.</li>
+                <li><strong>State symmetry:</strong> Proper <span class="mono">undo()</span> requires you to capture prior state (mementos/snapshots) or inverse ops.</li>
+                <li><strong>Granularity choice:</strong> Too coarse = poor reuse; too fine = noisy histories and complex transactions.</li>
+              </ul>
+            </div>
+          </div>
 
-        </div>
+        
         <div class="card">
           <div class="pill">When to Use</div>
           <ul>
-            <li>Editors (text, graphics), IDEs</li>
-            <li>Workflows, job queues, remotes</li>
-            <li>Game input recording/replay</li>
+            <li><strong>Undo/Redo Required:</strong> Text/graphics editors, CAD, spreadsheets, IDE refactors.</li>
+            <li><strong>Record &amp; Replay:</strong> Game input capture, macro recorders, automation scripts.</li>
+            <li><strong>Workflow/Queue:</strong> Background jobs, retries, sagas, outbox pattern, distributed tasks.</li>
+            <li><strong>Decouple UI from Domain:</strong> Menus, toolbars, hotkeys, remote controls, voice/CLI adapters.</li>
+            <li><strong>Auditing/Compliance:</strong> Need to persist intents for review or compensation actions.</li>
+            <li><strong>Batch/Transactional Ops:</strong> Apply/rollback a sequence as one macro (with partial failure handling).</li>
           </ul>
+          <div style="margin-top:8px">
+            <div class="pill">Smells it can fix</div>
+              <ul>
+                <li><strong>Fat Controllers:</strong> UI widgets directly mutating domain objects.</li>
+                <li><strong>Unreliable Undo:</strong> Ad-hoc “reverse” logic scattered across components.</li>
+                <li><strong>Hard-to-test UI:</strong> Logic trapped in click handlers instead of testable units.</li>
+              </ul>
+          </div>
+
+          <div style="margin-top:8px">
+            <div class="pill">Anti-cases</div>
+              <ul>
+                <li>One-off, trivial actions with no need for history, queuing, or reuse.</li>
+                <li>Purely declarative pipelines where a rule engine or dataflow fits better.</li>
+              </ul>
+          </div>
+
         </div>
       </div>
     </section>
