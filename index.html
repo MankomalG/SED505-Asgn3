@@ -39,7 +39,7 @@
   <header>
     <div>
       <h1>Command Design Pattern — Interactive</h1>
-      <div class="sub">Type: Behavioral • Encapsulate requests • Supports undo/redo • Great for UI, editors, workflows</div>
+      <div class="sub">Type: Behavioral • Encapsulate requests • Supports undo • Great for UI, editors, workflows</div>
     </div>
     <div class="row">
       <a class="btn" href="#uml">UML</a>
@@ -58,7 +58,7 @@
           <div class="pill">Definition</div>
           <p>
             The <strong>Command</strong> pattern turns a request into a first-class object that exposes a minimal interface
-            (<span class="mono">execute()</span> and optionally <span class="mono">undo()</span>/<span class="mono">redo()</span>). This lets you
+            (<span class="mono">execute()</span> and optionally <span class="mono">undo(). This lets you
             <em>decouple</em> the thing that triggers an action (<em>Invoker</em>) from the thing that knows how to do it
             (<em>Receiver</em>), while keeping the action itself (<em>Command</em>) portable and composable.
           </p>
@@ -76,7 +76,7 @@
           <div class="pill">Rationale</div>
           <ul>
             <li><strong>Decoupling:</strong> UI/controllers don’t need to know <em>how</em> an action is implemented—only which command to invoke.</li>
-            <li><strong>Undo/Redo by design:</strong> By inverting effects in <span class="mono">undo()</span>, you get editor-grade history stacks.</li>
+            <li><strong>Undo by design:</strong> By inverting effects in <span class="mono">undo()</span>, you get editor-grade history stacks.</li>
             <li><strong>Composability:</strong> Macro commands (a command of commands) enable batch/transactional operations.</li>
             <li><strong>Asynchrony &amp; queues:</strong> Commands drop cleanly into job queues, workers, and sagas with retry/backoff.</li>
             <li><strong>Auditability:</strong> Log the <em>intent</em> (“what”), not only side effects—great for analytics and compliance.</li>
@@ -96,7 +96,7 @@
         <div class="card">
           <div class="pill">When to Use</div>
           <ul>
-            <li><strong>Undo/Redo Required:</strong> Text/graphics editors, CAD, spreadsheets, IDE refactors.</li>
+            <li><strong>Undo Required:</strong> Text/graphics editors, CAD, spreadsheets, IDE refactors.</li>
             <li><strong>Record &amp; Replay:</strong> Game input capture, macro recorders, automation scripts.</li>
             <li><strong>Workflow/Queue:</strong> Background jobs, retries, sagas, outbox pattern, distributed tasks.</li>
             <li><strong>Decouple UI from Domain:</strong> Menus, toolbars, hotkeys, remote controls, voice/CLI adapters.</li>
