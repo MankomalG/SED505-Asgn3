@@ -292,51 +292,53 @@ public static class Program {
       <h2>UML — Class Diagram </h2>
       <div class="mermaid">
         classDiagram
-        direction TB
+        direction LR
+            class client{
+
+            }
+
             class RemoteControl {
-                +Press()
-                +Undo()
-                +Redo()
+              - vector commands
+              + setCommand(int slot, ICommand* command)
+              + pressButton(int i)
             }
 
-            class ICommand {
-                +Name
-                +Execute()
-                +Undo()
+            class ICommand  {
+              <!-- <<interface>> -->
+              + execute()
+              + undo()
             }
 
-            class LightOnCommand {
-            }
-
-            class LightOffCommand {
-            }
-
-            class TVOnCommand {
-            }
-
-            class TVOffCommand {
+            class LightCommand {
+              - Light* light
+              + execute()
+              + undo()
             }
 
             class Light {
-                +On()
-                +Off()
+              + on()
+              + off()
+            }
+
+            class TVCommand {
+              - TV* tv
+              + execute()
+              + undo()
             }
 
             class TV {
-                +On()
-                +Off()
+              + on()
+              + off()
             }
 
-            RemoteControl --> ICommand : invokes
-            LightOnCommand ..|> ICommand
-            LightOffCommand ..|> ICommand
-            TVOnCommand ..|> ICommand
-            TVOffCommand ..|> ICommand
-            LightOnCommand --> Light : uses
-            LightOffCommand --> Light : uses
-            TVOnCommand --> TV : uses
-            TVOffCommand --> TV : uses
+           
 
+            RemoteControl "1" --> "*" ICommand : uses 
+            LightCommand ..|> ICommand
+            LightCommand --> Light : controls 
+            TVCommand ..|> ICommand
+            TVCommand --> TV : controls 
+            client --> RemoteControl : configures
       </div>
     </section>
 
