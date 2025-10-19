@@ -50,7 +50,9 @@
       <a class="btn" href="#complex-example">Complex Example</a>
       <!-- <a class="btn" href="#downloads-simple">Simple Downloads</a> -->
       <!-- <a class="btn" href="#downloads-complex">Complex Downloads</a> -->
-      <a class="btn" href="#uml-code">Code UML</a>
+      <a class="btn" href="#uml-code">Simple Code UML</a>
+      <a class="btn" href="#uml-code-complex">Complex Code UML</a>
+
     </div>
   </header>
 
@@ -125,8 +127,75 @@
           </div>
 
         </div>
+
+
+        
+      </div>
+
+        <div class="card">
+          <div class="pill"><h2><strong>Common Usage in the Software Industry</strong></h2></div>
+            <p>
+              The Command Pattern is widely adopted across desktop, web, and enterprise software whenever actions
+              need to be <strong>decoupled, queued, reversible, or logged</strong>. It provides a uniform structure for
+              executing, undoing, or retrying operations without tightly coupling the UI to the business logic.
+            </p>
+            <ul>
+              <li><strong>Text & Graphic Editors:</strong> Every user operation (typing, drawing, resizing) is a Command object.
+                This enables full <em>Undo/Redo stacks</em> and action history recording.</li>
+              <li><strong>Smart Home & IoT Controllers:</strong> Each button, scene, or voice action translates into a Command
+                (e.g., “Turn on TV”, “Activate Movie Night”)—easy to schedule or roll back if an operation fails.</li>
+              <li><strong>Game Development:</strong> Commands represent player actions. They can be recorded and replayed for
+                tutorials, macros, or online synchronization.</li>
+              <li><strong>Workflow Engines / Job Queues:</strong> Commands encapsulate discrete tasks, allowing them to be
+                queued, persisted, retried, or distributed across systems (common in cloud microservices).</li>
+              <li><strong>Database & Transaction Systems:</strong> Used to implement reversible transactions and compensation
+                logic (via undo commands) for reliable operations.</li>
+              <li><strong>Testing & Automation:</strong> UI automation tools (like Selenium) often record actions as Commands,
+                which can later be replayed for regression testing.</li>
+            </ul>
+            <p>
+              In summary, the Command Pattern’s ability to <em>package behavior as data</em> makes it invaluable for systems
+              that require <strong>undo/redo support, logging, batching, or remote execution</strong>.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- ========================= YOUTUBE VIDEOS SECTION ========================= -->
+    <section id="videos">
+      <h2>Video Tutorials — Command Pattern in Action</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Video 1</div>
+          <p><strong>Command Design Pattern Explained Simply (with C# Example)</strong></p>
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/IEtwTB4Vt0E"
+              title="Command Design Pattern Explained Simply"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:12px;">
+            </iframe>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="pill">Video 2</div>
+          <p><strong>Command Pattern — Real World Example (Smart Home Remote)</strong></p>
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/9qA5kw8dcSU" 
+                    title="Command Pattern Real World Example" 
+                    frameborder="0" allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;">
+            </iframe>
+          </div>
+        </div>
       </div>
     </section>
+
 
     <section id="uml">
       <h2>UML — Class Diagram (Generic)</h2>
@@ -245,56 +314,6 @@
       </p>
     </section>
 
-    <!-- ========================= COMPLEX EXAMPLE SECTION ========================= -->
-    <section id="complex-example">
-      <h2>Complex Example — Smart Home “Scenes” with Undo & NoOpCommand</h2>
-      <div class="grid">
-        <div class="card">
-          <div class="pill">Problem (Complex)</div>
-          <p>
-            Group multiple device actions into <em>scenes</em> (e.g., “Movie Night”). 
-            If one step fails, rollback safely. Remote slots must be safe even when unassigned.
-          </p>
-          <ul>
-            <li>Transactional scenes (MacroCommand).</li>
-            <li>Undo/Redo at scene level.</li>
-            <li>NoOpCommand for empty slots.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <div class="pill">How Command Solves It</div>
-          <ul>
-            <li><strong>MacroCommand</strong> executes many commands and rolls back on failure.</li>
-            <li><strong>NoOpCommand</strong> avoids null checks and crashes.</li>
-            <li>Invoker remains UI-agnostic and reusable.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-
-
-    <!-- ========================= DOWNLOADS: COMPLEX ========================= -->
-    <section id="downloads-complex">
-      <h2>Download C# Source — Complex Example</h2>
-      <p>Download the scene-based, undoable, rollback-safe implementation with NoOpCommand.</p>
-      <div class="row" style="margin-top:8px;">
-        <a class="btn primary" href="files/complex/ICommand.cs" target="_blank" download>Complex/ICommand.cs</a>
-        <a class="btn primary" href="files/complex/NoOpCommands.cs" target="_blank" download>Complex/NoOpCommand.cs</a>
-        <a class="btn primary" href="files/complex/Light.cs" target="_blank" download>Complex/Light.cs</a>
-        <a class="btn primary" href="files/complex/TV.cs" target="_blank" download>Complex/TV.cs</a>
-        <a class="btn primary" href="files/complex/LightCommand.cs" target="_blank" download>Complex/LightCommand.cs</a>
-        <a class="btn primary" href="files/complex/TVCommand.cs" target="_blank" download>Complex/TVCommand.cs</a>
-        <a class="btn primary" href="files/complex/MacroCommands.cs" target="_blank" download>Complex/MacroCommand.cs</a>
-        <a class="btn primary" href="files/complex/RemoteControl.cs" target="_blank" download>Complex/RemoteControl.cs</a>
-        <a class="btn primary" href="files/complex/Program.cs" target="_blank" download>Complex/Program.cs</a>
-      </div>
-      <p style="margin-top:10px;">
-        <a class="btn ok" href="files/complex.zip" download>⬇ Download Complex Project (ZIP)</a>
-      </p>
-    </section>
-
     <section id="uml-code">
       <h2>UML — Class Diagram (Code-Focused)</h2>
       <div class="mermaid">
@@ -346,8 +365,157 @@
       </div>
     </section>
 
+
+
+    <!-- ========================= COMPLEX EXAMPLE SECTION ========================= -->
+    <section id="complex-example">
+      <h2>Complex Example — Smart Home “Scenes” with Undo & NoOpCommand</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Problem (Complex)</div>
+          <p>
+            In a smart-home system, multiple devices like lights, TVs, and curtains must operate together in
+            <em>coordinated scenes</em> — for example, the “Movie Night” scene turns off lights, powers on the TV, and closes curtains.
+            However, several problems arise:
+          </p>
+          <ul>
+            <li><strong>Multiple actions must run as one unit:</strong> If any step fails, previous changes must be rolled back.</li>
+            <li><strong>Dynamic slots:</strong> The remote has configurable buttons that may not always be assigned a function.</li>
+            <li><strong>Consistency and safety:</strong> Users should never get a crash or inconsistent state even if a slot is empty.</li>
+          </ul>
+          <p>
+            The challenge is to design a <strong>flexible, fault-tolerant, and undo-capable</strong> structure that can handle single commands and grouped scenes uniformly.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="pill">How Command Pattern Solves It</div>
+          <ul>
+            <li><strong>MacroCommand:</strong> Bundles multiple device commands into one scene.
+              Executes all steps sequentially and automatically rolls back if any step fails — ensuring atomic, consistent behavior.
+            </li>
+            <li><strong>NoOpCommand:</strong> Provides a safe “do nothing” default for unassigned remote slots, preventing null checks and runtime errors.</li>
+            <li><strong>Undo:</strong> Each command knows how to reverse its own action, so pressing Undo restores the previous device states.</li>
+            <li><strong>Decoupled RemoteControl:</strong> The invoker simply executes whatever command is assigned — no knowledge of devices or logic required.</li>
+          </ul>
+          <p>
+            The result is a robust <em>Smart Home Controller</em> that can execute complex actions safely, undo or redo operations, and remain easily extensible for future devices or automation scenes.
+          </p>
+        </div>
+
+
+
+      </div>
+    </section>
+
+
+
+
+    <!-- ========================= DOWNLOADS: COMPLEX ========================= -->
+    <section id="downloads-complex">
+      <h2>Download C# Source — Complex Example</h2>
+      <p>Download the scene-based, undoable, rollback-safe implementation with NoOpCommand.</p>
+      <div class="row" style="margin-top:8px;">
+        <a class="btn primary" href="files/complex/ICommand.cs" target="_blank" download>Complex/ICommand.cs</a>
+        <a class="btn primary" href="files/complex/NoOpCommands.cs" target="_blank" download>Complex/NoOpCommand.cs</a>
+        <a class="btn primary" href="files/complex/Light.cs" target="_blank" download>Complex/Light.cs</a>
+        <a class="btn primary" href="files/complex/TV.cs" target="_blank" download>Complex/TV.cs</a>
+        <a class="btn primary" href="files/complex/LightCommand.cs" target="_blank" download>Complex/LightCommand.cs</a>
+        <a class="btn primary" href="files/complex/TVCommand.cs" target="_blank" download>Complex/TVCommand.cs</a>
+        <a class="btn primary" href="files/complex/MacroCommands.cs" target="_blank" download>Complex/MacroCommand.cs</a>
+        <a class="btn primary" href="files/complex/RemoteControl.cs" target="_blank" download>Complex/RemoteControl.cs</a>
+        <a class="btn primary" href="files/complex/Program.cs" target="_blank" download>Complex/Program.cs</a>
+      </div>
+      <p style="margin-top:10px;">
+        <a class="btn ok" href="files/complex.zip" download>⬇ Download Complex Project (ZIP)</a>
+      </p>
+    </section>
+
+
+    <section id="uml-code-complex">
+      <h2>UML — Class Diagram (Complex)</h2>
+      <div class="mermaid">
+        classDiagram
+          direction LR
+
+          class ICommand {
+            <!-- <<interface>> -->
+            +Execute()
+            +Undo()
+          }
+
+          class NoOpCommand {
+            +Execute()
+            +Undo()
+          }
+
+          class Light {
+            +Location : string
+            +IsOn : bool
+            +On()
+            +Off()
+          }
+
+          class TV {
+            +Location : string
+            +IsOn : bool
+            +On()
+            +Off()
+          }
+
+          class LightCommand {
+            -light : Light
+            -turnOn : bool
+            +Execute()
+            +Undo()
+          }
+
+          class TVCommand {
+            -tv : TV
+            -turnOn : bool
+            +Execute()
+            +Undo()
+          }
+
+          class MacroCommand {
+            -steps : List~ICommand~
+            +Execute()
+            +Undo()
+          }
+
+          class RemoteControl {
+            -slots : List~ICommand~
+            +RemoteControl(slotCount=5)
+            +SetCommand(slot:int, cmd:ICommand)
+            +PressButton(slot:int)
+            +Press(cmd:ICommand)  %% ad-hoc execute
+          }
+
+          class Program {
+            <!-- <<client>> -->
+          }
+
+          %% Inheritance / realization
+          NoOpCommand ..|> ICommand
+          LightCommand ..|> ICommand
+          TVCommand ..|> ICommand
+          MacroCommand ..|> ICommand
+
+          %% Associations
+          LightCommand --> Light : controls
+          TVCommand --> TV : controls
+          MacroCommand o--> "0..*" ICommand : contains
+          RemoteControl --> "0..*" ICommand : uses (slots)
+          Program --> RemoteControl : configures
+          Program --> Light
+          Program --> TV
+
+      </div>
+    </section>
+
+
     <footer>
-      Built for a 10-minute class presentation • Simple and Complex examples • Ready-to-download source code
+      Built to show the Command Pattern by showing UML, Coding Examples and the usage.
     </footer>
   </main>
 
