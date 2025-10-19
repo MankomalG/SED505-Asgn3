@@ -22,15 +22,16 @@
     pre { padding:14px; background:#0b1220; border:1px solid #1f2937; border-radius:12px; overflow:auto; }
     .mermaid { background:#0b1220; border:1px solid #1f2937; border-radius:12px; padding:10px; }
     .row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-    .btn { appearance:none; border:1px solid #1f2937; background:#0b1220; color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer; transition:.15s ease; font-weight:600; }
+    .btn { appearance:none; border:1px solid #1f2937; background:#0b1220; color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer; transition:.15s ease; font-weight:600; text-decoration:none; display:inline-block; }
     .btn:hover { transform: translateY(-1px); border-color:#334155; }
     .btn.primary { background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%); border-color:#3b82f6; }
     .btn.ok { background: linear-gradient(90deg, #16a34a, #22c55e); border-color:#16a34a; }
     .btn.warn { background: linear-gradient(90deg, #d97706, #f59e0b); border-color:#d97706; }
+    .btn.ghost { background:#0b1220; border-color:#1f2937; }
     .card { background:#0b1220; border:1px solid #1f2937; border-radius:12px; padding:12px; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
     footer { text-align:center; color:#9aa3b2; padding:40px 0; }
-    .kpi { font-weight:700; }
+    .muted { color:#9aa3b2; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>mermaid.initialize({ startOnLoad: true, theme: 'dark' });</script>
@@ -44,9 +45,12 @@
     <div class="row">
       <a class="btn" href="#uml">UML</a>
       <a class="btn" href="#demo">Interactive Demo</a>
-      <a class="btn" href="#code">C# Code</a>
+      <!-- <a c lass="btn" href="#code">C# Code</a> -->
+      <a class="btn" href="#simple-example">Simple Example</a>
+      <a class="btn" href="#complex-example">Complex Example</a>
+      <!-- <a class="btn" href="#downloads-simple">Simple Downloads</a> -->
+      <!-- <a class="btn" href="#downloads-complex">Complex Downloads</a> -->
       <a class="btn" href="#uml-code">Code UML</a>
-
     </div>
   </header>
 
@@ -145,7 +149,6 @@
         Invoker : +setCommand(cmd)
         Invoker : +invoke()
         Invoker : +undo()
-        
 
         class Client
 
@@ -157,7 +160,7 @@
     </section>
 
     <section id="participants">
-  <h2>Participants in the Command Pattern</h2>
+      <h2>Participants in the Command Pattern</h2>
     <ul>
         <li><strong>Command</strong> – declares an interface for executing an operation.</li>
         <li><strong>ConcreteCommand</strong> – extends the Command interface, implementing the <code>Execute</code> method by invoking the corresponding operations on <em>Receiver</em>. It defines a link between the Receiver and the action.</li>
@@ -165,9 +168,6 @@
         <li><strong>Invoker</strong> – asks the command to carry out the request.</li>
         <li><strong>Receiver</strong> – knows how to perform the operations.</li>
     </ul>
-    <p>
-        <strong>Flow:</strong> The Client asks for a command to be executed. The Invoker takes the command, encapsulates it and can place it in a queue (in case there is something else to do first). The ConcreteCommand is in charge of the requested action, invoking the appropriate operation on the Receiver and producing the result.
-    </p>
     </section>
 
     <section id="demo">
@@ -183,7 +183,7 @@
             <button class="btn" id="btnUndo">Undo</button>
             <button class="btn" id="btnRedo">Redo</button>
           </div>
-          <p class="muted">Each button toggles its device. The demo decides whether to run <em>On</em> or <em>Off</em> command based on current state — same button, different command.</p>
+          <p class="muted">Same button, different command based on current device state.</p>
         </div>
         <div class="card">
           <div class="pill">State</div>
@@ -196,115 +196,121 @@
       </div>
     </section>
 
-    <section id="code">
-      <h2>C# — Only Four Commands, Two Toggle Buttons Logic</h2>
-      <pre><code>using System; 
-using System.Collections.Generic;
+  
 
-// ========== 1) Command interface ==========
-public interface ICommand { void Execute(); void Undo(); string Name { get; } }
+    <!-- ========================= SIMPLE EXAMPLE SECTION ========================= -->
+    <section id="simple-example">
+      <h2>Simple Example — Two Devices, Four Commands</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Problem (Simple)</div>
+          <p>
+            Build a remote that can turn a <strong>Light</strong> and a <strong>TV</strong> ON/OFF. 
+            The UI should not know device internals and should support <strong>Undo</strong>.
+          </p>
+          <ul>
+            <li>Two receivers: Light, TV.</li>
+            <li>Four commands: LightOn, LightOff, TVOn, TVOff.</li>
+            <li>Invoker holds history for undo/redo.</li>
+          </ul>
+        </div>
 
-// ========== 2) Receivers ==========
-public class Light {
-  public string Location { get; }
-  public bool IsOn { get; private set; }
-  public Light(string location){ Location = location; }
-  public void On(){ IsOn = true;  Console.WriteLine($"{Location} light ON"); }
-  public void Off(){ IsOn = false; Console.WriteLine($"{Location} light OFF"); }
-}
+        <div class="card">
+          <div class="pill">How Command Solves It</div>
+          <ul>
+            <li>Each button press maps to an <span class="mono">ICommand</span> with <span class="mono">Execute/Undo</span>.</li>
+            <li>Invoker triggers commands and maintains stacks for undo/redo.</li>
+            <li>Receivers expose simple actions (<span class="mono">On/Off</span>).</li>
+          </ul>
+          <p class="muted">Clean separation of concerns; easy to add more devices or commands later.</p>
+        </div>
+      </div>
+    </section>
 
-public class TV {
-  public string Location { get; }
-  public bool IsOn { get; private set; }
-  public TV(string location){ Location = location; }
-  public void On(){ IsOn = true;  Console.WriteLine($"{Location} TV ON"); }
-  public void Off(){ IsOn = false; Console.WriteLine($"{Location} TV OFF"); }
-}
+    <!-- ========================= DOWNLOADS: SIMPLE ========================= -->
+    <section id="downloads-simple">
+      <h2>Download C# Source — Simple Example</h2>
+      <p>Download the basic two-device, four-command implementation.</p>
+      <div class="row" style="margin-top:8px;">
+        <a class="btn primary" href="files/simple/ICommand.cs" target="_blank" download>Simple/ICommand.cs</a>
+        <a class="btn primary" href="files/simple/Light.cs" target="_blank" download>Simple/Light.cs</a>
+        <a class="btn primary" href="files/simple/TV.cs" target="_blank" download>Simple/TV.cs</a>
+        <a class="btn primary" href="files/simple/LightCommand.cs" target="_blank" download>Simple/LightCommand.cs</a>
+        <a class="btn primary" href="files/simple/TVCommand.cs" target="_blank" download>Simple/TVCommand.cs</a>
+        <a class="btn primary" href="files/simple/RemoteControl.cs" target="_blank" download>Simple/RemoteControl.cs</a>
+        <a class="btn primary" href="files/simple/Program.cs" target="_blank" download>Simple/Program.cs</a>
+      </div>
+      <p style="margin-top:10px;">
+        <a class="btn ok" href="files/simple.zip" download>⬇ Download Simple Project (ZIP)</a>
+      </p>
+    </section>
 
-// ========== 3) Concrete Commands (only 4) ==========
-public class LightOnCommand : ICommand {
-  private readonly Light _l; public LightOnCommand(Light l){ _l = l; }
-  public string Name => $"LightOn({_l.Location})";
-  public void Execute(){ _l.On(); }
-  public void Undo(){ _l.Off(); }
-}
-public class LightOffCommand : ICommand {
-  private readonly Light _l; public LightOffCommand(Light l){ _l = l; }
-  public string Name => $"LightOff({_l.Location})";
-  public void Execute(){ _l.Off(); }
-  public void Undo(){ _l.On(); }
-}
-public class TVOnCommand : ICommand {
-  private readonly TV _tv; public TVOnCommand(TV tv){ _tv = tv; }
-  public string Name => $"TVOn({_tv.Location})";
-  public void Execute(){ _tv.On(); }
-  public void Undo(){ _tv.Off(); }
-}
-public class TVOffCommand : ICommand {
-  private readonly TV _tv; public TVOffCommand(TV tv){ _tv = tv; }
-  public string Name => $"TVOff({_tv.Location})";
-  public void Execute(){ _tv.Off(); }
-  public void Undo(){ _tv.On(); }
-}
+    <!-- ========================= COMPLEX EXAMPLE SECTION ========================= -->
+    <section id="complex-example">
+      <h2>Complex Example — Smart Home “Scenes” with Undo & NoOpCommand</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Problem (Complex)</div>
+          <p>
+            Group multiple device actions into <em>scenes</em> (e.g., “Movie Night”). 
+            If one step fails, rollback safely. Remote slots must be safe even when unassigned.
+          </p>
+          <ul>
+            <li>Transactional scenes (MacroCommand).</li>
+            <li>Undo/Redo at scene level.</li>
+            <li>NoOpCommand for empty slots.</li>
+          </ul>
+        </div>
 
-// ========== 4) Invoker (Remote) ==========
-public class RemoteControl {
-  private readonly Stack<ICommand> _undo = new();
-  private readonly Stack<ICommand> _redo = new();
-  public void Press(ICommand cmd){ Console.WriteLine($"> {cmd.Name}"); cmd.Execute(); _undo.Push(cmd); _redo.Clear(); }
-  public void Undo(){ if(_undo.Count==0){ Console.WriteLine("Nothing to undo."); return;} var c=_undo.Pop(); Console.WriteLine($"< UNDO {c.Name}"); c.Undo(); _redo.Push(c); }
-  public void Redo(){ if(_redo.Count==0){ Console.WriteLine("Nothing to redo."); return;} var c=_redo.Pop(); Console.WriteLine($"> REDO {c.Name}"); c.Execute(); _undo.Push(c); }
-}
-
-// ========== 5) Demo (Client) ==========
-public static class Program {
-  public static void Main(){
-    var light = new Light("Living Room");
-    var tv    = new TV("Living Room");
-    var remote = new RemoteControl();
-
-    // Toggle Light button simulation
-    void ToggleLight(){
-      ICommand cmd = light.IsOn ? new LightOffCommand(light) : new LightOnCommand(light);
-      remote.Press(cmd);
-    }
-
-    // Toggle TV button simulation
-    void ToggleTV(){
-      ICommand cmd = tv.IsOn ? new TVOffCommand(tv) : new TVOnCommand(tv);
-      remote.Press(cmd);
-    }
-
-    // Simulate clicks
-    ToggleLight(); // ON
-    ToggleTV();    // ON
-    ToggleLight(); // OFF
-    remote.Undo(); // undo Light OFF -> Light ON
-    remote.Redo(); // redo Light OFF
-    ToggleTV();    // OFF
-  }
-}
-</code></pre>
+        <div class="card">
+          <div class="pill">How Command Solves It</div>
+          <ul>
+            <li><strong>MacroCommand</strong> executes many commands and rolls back on failure.</li>
+            <li><strong>NoOpCommand</strong> avoids null checks and crashes.</li>
+            <li>Invoker remains UI-agnostic and reusable.</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
 
+
+    <!-- ========================= DOWNLOADS: COMPLEX ========================= -->
+    <section id="downloads-complex">
+      <h2>Download C# Source — Complex Example</h2>
+      <p>Download the scene-based, undoable, rollback-safe implementation with NoOpCommand.</p>
+      <div class="row" style="margin-top:8px;">
+        <a class="btn primary" href="files/complex/ICommand.cs" target="_blank" download>Complex/ICommand.cs</a>
+        <a class="btn primary" href="files/complex/NoOpCommands.cs" target="_blank" download>Complex/NoOpCommand.cs</a>
+        <a class="btn primary" href="files/complex/Light.cs" target="_blank" download>Complex/Light.cs</a>
+        <a class="btn primary" href="files/complex/TV.cs" target="_blank" download>Complex/TV.cs</a>
+        <a class="btn primary" href="files/complex/LightCommand.cs" target="_blank" download>Complex/LightCommand.cs</a>
+        <a class="btn primary" href="files/complex/TVCommand.cs" target="_blank" download>Complex/TVCommand.cs</a>
+        <a class="btn primary" href="files/complex/MacroCommands.cs" target="_blank" download>Complex/MacroCommand.cs</a>
+        <a class="btn primary" href="files/complex/RemoteControl.cs" target="_blank" download>Complex/RemoteControl.cs</a>
+        <a class="btn primary" href="files/complex/Program.cs" target="_blank" download>Complex/Program.cs</a>
+      </div>
+      <p style="margin-top:10px;">
+        <a class="btn ok" href="files/complex.zip" download>⬇ Download Complex Project (ZIP)</a>
+      </p>
+    </section>
+
     <section id="uml-code">
-      <h2>UML — Class Diagram </h2>
+      <h2>UML — Class Diagram (Code-Focused)</h2>
       <div class="mermaid">
         classDiagram
         direction LR
-            class client{
-
-            }
+            class client { }
 
             class RemoteControl {
               - vector commands
               + setCommand(int slot, ICommand* command)
               + pressButton(int i)
+              + undo()
+              + redo()
             }
 
             class ICommand  {
-              <!-- <<interface>> -->
               + execute()
               + undo()
             }
@@ -331,25 +337,22 @@ public static class Program {
               + off()
             }
 
-           
-
-            RemoteControl "1" --> "*" ICommand : uses 
+            RemoteControl "1" --> "*" ICommand : uses
             LightCommand ..|> ICommand
-            LightCommand --> Light : controls 
+            LightCommand --> Light : controls
             TVCommand ..|> ICommand
-            TVCommand --> TV : controls 
+            TVCommand --> TV : controls
             client --> RemoteControl : configures
       </div>
     </section>
 
-
     <footer>
-      Built for a 10‑minute class presentation • UML kept generic • Only 4 commands implemented
+      Built for a 10-minute class presentation • Simple and Complex examples • Ready-to-download source code
     </footer>
   </main>
 
   <script>
-    // ======== Interactive JS demo — Two Toggle Buttons ========
+    // ======== Interactive JS demo — Two Toggle Buttons (simple behavior) ========
     class Light { constructor(loc){ this.location=loc; this.isOn=false; } On(){ this.isOn=true; log(`${this.location} light ON`);} Off(){ this.isOn=false; log(`${this.location} light OFF`);} }
     class TV { constructor(loc){ this.location=loc; this.isOn=false; } On(){ this.isOn=true; log(`${this.location} TV ON`);} Off(){ this.isOn=false; log(`${this.location} TV OFF`);} }
 
@@ -359,7 +362,8 @@ public static class Program {
     class TVOnCommand extends ICommand { constructor(tv){ super(); this.tv=tv; this.name=`TVOn(${tv.location})`; } execute(){ this.tv.On(); } undo(){ this.tv.Off(); } }
     class TVOffCommand extends ICommand { constructor(tv){ super(); this.tv=tv; this.name=`TVOff(${tv.location})`; } execute(){ this.tv.Off(); } undo(){ this.tv.On(); } }
 
-    class RemoteControl { constructor(){ this.undoStack=[]; this.redoStack=[]; }
+    class RemoteControl {
+      constructor(){ this.undoStack=[]; this.redoStack=[]; }
       press(cmd){ log(`> ${cmd.name}`); cmd.execute(); this.undoStack.push(cmd); this.redoStack=[]; render(); }
       undo(){ if(!this.undoStack.length){ log('Nothing to undo.'); return;} const c=this.undoStack.pop(); log(`< UNDO ${c.name}`); c.undo(); this.redoStack.push(c); render(); }
       redo(){ if(!this.redoStack.length){ log('Nothing to redo.'); return;} const c=this.redoStack.pop(); log(`> REDO ${c.name}`); c.execute(); this.undoStack.push(c); render(); }
@@ -383,15 +387,14 @@ public static class Program {
 
     const stateView = document.getElementById('stateView');
     const historyView = document.getElementById('historyView');
+
     function render(){
-      stateView.textContent = `Light: ${light.isOn? 'ON':'OFF'}
-TV: ${tv.isOn? 'ON':'OFF'}`;
+      stateView.textContent = `Light: ${light.isOn? 'ON':'OFF'}\nTV: ${tv.isOn? 'ON':'OFF'}`;
       historyView.textContent = remote.undoStack.length
-        ? remote.undoStack.slice().reverse().map(c=>c.name).join('')
+        ? remote.undoStack.slice().reverse().map(c=>c.name).join('\n')
         : '(empty)';
     }
     function log(msg){ console.log(msg); }
-
     render();
   </script>
 </body>
